@@ -23,6 +23,7 @@ export default class extends Phaser.Scene {
     this.load.image('heart','assets/images/heart.png')
     this.load.audio('backAudio','assets/music/bckMusic.mp3')
     this.load.audio('hitSound','assets/music/hitSound.mp3')
+    this.load.image('mask','assets/images/mask2.png')
 
   }
 

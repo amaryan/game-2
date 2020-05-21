@@ -30,7 +30,7 @@ var heart3
 var alienTween
 var hit
 var byeCards
-var hit
+var circle
  class GameScene extends Phaser.Scene {
   constructor () {
     super({ key: 'GameScene' })
@@ -41,16 +41,20 @@ var hit
   create () {
   
   //el fondo
+    
     let audio = this.sound.add('backAudio',{loop: true})
      hit= this.sound.add('hitSound',{loop: false})
     audio.volume = audio.volume- 0.9
     audio.play()
     mouseInput = this.input
-    this.add.image(400,300,'background')
+    var bg = this.add.image(400,300,'background')
+   
+    
     text = this.add.text(250, 380, 'Drag the bear to the board', {
-      font: '30px Bangers',
-      fill: '#4A70DE'
+      font: '30px Fredoka One',
+      fill: '#C0392B '
     })
+   
   
    var dog = this.dog
    dog = new Character({
@@ -75,12 +79,20 @@ var hit
     })
     
     bear = this.add.image(80,700,'bear')
+    circle = this.add.graphics()
+    var color = 0xF73607; // mult
+    var thickness = 4;
+    var alpha = 0.3;
+    
+    
+    
     alien = this.add.image(400,200,'alien')
     crocodile = this.add.image(180,500,'crocodile')
     monkey = this.add.image(640,500,'monkey')
     button1 = this.add.image(400,500,'button')
-    giraffe = this.add.image(500,220,'giraffe')
-    moose = this.add.image(300,220,'moose')
+    button1.scaleX = 2.5
+    giraffe = this.add.image(530,220,'giraffe')
+    moose = this.add.image(330,220,'moose')
     heart1 = this.add.image(350,110,'heart')
     heart2 = this.add.image(400,110,'heart')
     heart3 = this.add.image(450,110,'heart')
@@ -94,8 +106,7 @@ var hit
      */
     
 
-    dog.setInteractive({ draggable: true})
-    frog.setInteractive({ draggable: true})
+
     bear.setInteractive({ draggable:  true})
     
     bear.on('drag',function(pointer, gameObject, dragX, dragY){
@@ -107,43 +118,38 @@ var hit
     if(bear.y<650 || bear.x > 150 ){
       bear.y = 500
       bear.x = 400
-     
       console.log('estoy aqui')  
     }else{
       bear.y = 700
       bear.x = 80
     }
-   
-    
   })
-  
-  
- 
-  
- 
+
 //Aqui tenemos el temporizador de 5 segundos (Tengo que poner esto en un texto para que se vea el tiempo pasar en el juego)
   timedEvent = this.time.addEvent({
-    delay: 5000,
+    delay: 7000,
     callback: startBattle,
     callbackScope: this
   })
 
      //Los diferentes textos que iran apareciendo 
   textTime = this.add.text(32,32,'', {
-    font: '30px Bangers',
+    font: '30px Fredoka One',
     fill: '#74A016'
     });
- textTime.setText('The battle starts in 5 seconds')
+  
 
     finalText = this.add.text(1000,360,'', {
-    font: '80px Bangers',
+    font: '60px Fredoka One',
     fill: '#C85213'
   }).setOrigin(0,0);
 
   titleText = this.add.text(-1000,290,'', {
-      font: '80px Bangers',
+      font: '60px Fredoka One',
       fill: '#74A016'
   }).setOrigin(0,0);
+
+
    this.add.existing(button1)
    this.add.existing(bear)
    this.add.existing(alien)
@@ -157,6 +163,52 @@ var hit
    this.add.existing(heart1)
    this.add.existing(heart2)
    this.add.existing(heart3)
+
+   var spotlight = this.make.sprite({
+    x: 80,
+    y: 700,
+    key: 'mask',
+    add: false,
+    
+  })
+  
+  bg.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  alien.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  heart1.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  heart2.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  heart3.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  crocodile.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  monkey.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  dog.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  frog.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  gorilla.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+  
+  
+
+  this.tweens.add({
+    targets: [spotlight,bear],
+    duration: 1000,
+    repeat: 1,
+    x: 400,
+    y: 500,
+    yoyo: true,
+    ease: 'Sine.easeInOut',
+    onComplete: ()=> {
+      text.setColor('#641E16')
+      textTime.setText('The battle starts in 5 seconds')
+      bg.clearMask()
+      alien.clearMask()
+      heart1.clearMask()
+      heart2.clearMask()
+      heart3.clearMask()
+      crocodile.clearMask()
+      monkey.clearMask()
+      dog.clearMask()
+      frog.clearMask()
+      gorilla.clearMask()
+
+    }
+  })
 
   this.tweens.add({
     targets: [alien,heart1,heart2,heart3],
@@ -180,13 +232,6 @@ var hit
     delay : function (i, total, target){
       return i * 100
     },
-   /* hold: 1000 Con este ponemos tiempo de espera al final de cada repeticion del tween
-      repeatDelay: 1000 aqui tenemos una pausa antes de que la accion se vuelva a justo repetir
-      completeDelay: lo mismo que antes pero justo antes de acabar
-    onStart: () => console.log ('Start'),
-    onYoyo: () => console.log ('Start'),
-    onComplete: () => console.log ('Start'),
-    onRepeat: () => console.log ('Start')*/
   })
   //Con esta maravilla podemos crear el tween y usarlo desde una funcion o cualquier lado sin que nos de fallitos del scope
  giraffeTween =  this.tweens.createTimeline();
@@ -203,8 +248,8 @@ var hit
  })
  giraffeTween.add({
    targets: alien,
-   duration: 2000,
-   rotation: 0.5,
+   duration: 1500,
+   angle: 360,
    y: 2000,
    completeDelay: 500, 
   
@@ -219,13 +264,21 @@ var hit
   ease: 'Power0',
   onComplete : finalScreen
 })
+
 giraffeTween.add({
-  targets: [titleText,finalText],
-  x: 200,
+  targets: finalText,
+  x: 250,
   duration: 200,
   ease: 'Power3',
-  
 })
+giraffeTween.add({
+  targets: titleText,
+  delay:500,
+  x: 190,
+  duration: 400,
+  ease: 'Power3',
+})
+
 
  giraffeTween.add({
     targets: [giraffe,moose],
@@ -237,7 +290,7 @@ giraffeTween.add({
   })
   //esto es un comentario
    downloadText = this.add.text(320,477,'', {
-    font: '30px Bangers',
+    font: '30px Fredoka One',
     fill: '#DA6134'
   });
    //Hago esto para poder usarlos bien en las funciones de momento
@@ -265,6 +318,7 @@ giraffeTween.add({
 }
 
 function startBattle(){
+  
   text.setText('Click to start!')
   textTime.destroy()
   //Si el usuario no movio la ficha se coloca sola
@@ -376,8 +430,11 @@ function finalScreen(){
   crocodile.visible = false
   monkey.visible = false
   alien.visible = false
+ 
   titleText.setText('SAFARY ATTACK')
+  finalText.x = finalText.x -50
   finalText.setText('VICTORY!!!')
+  downloadText.x = downloadText.x -50
   downloadText.setText('DOWNLOAD HERE')
  button1.visible = true
  giraffe.rotation = +0.5

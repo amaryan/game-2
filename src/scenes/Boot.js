@@ -25,7 +25,7 @@ export default class extends Phaser.Scene {
 
     WebFont.load({
       google: {
-        families: ['Bangers']
+        families: ['Bangers','Fredoka One']
       },
       active: this.fontsLoaded
     })
