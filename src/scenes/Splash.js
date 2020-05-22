@@ -9,21 +9,21 @@ export default class extends Phaser.Scene {
     //
     // load your assets
     //
-    this.load.image('background','assets/Backgrounds/backgroundColorFall.png')
-    this.load.image('alien', 'assets/images/shipBlue_manned.png')
-    this.load.image('bear','assets/images/animal/bear.png')
-    this.load.image('crocodile','assets/images/animal/crocodile.png')
-    this.load.image('dog','assets/images/animal/dog.png')
-    this.load.image('frog','assets/images/animal/frog.png')
-    this.load.image('gorilla','assets/images/animal/gorilla.png')
-    this.load.image('monkey','assets/images/animal/monkey.png')
-    this.load.image('button','assets/images/button.png')
-    this.load.image('moose','assets/images/moose.png')
-    this.load.image('giraffe','assets/images/giraffe.png')
-    this.load.image('heart','assets/images/heart.png')
-    this.load.audio('backAudio','assets/music/bckMusic.mp3')
-    this.load.audio('hitSound','assets/music/hitSound.mp3')
-    this.load.image('circle','assets/images/circle.png')
+    this.load.image('background','src/assets/build_assets/images/bg/backgroundColorFall.png')
+    this.load.image('alien', 'src/assets/build_assets/images/characters/shipBlue_manned.png')
+    this.load.image('bear','src/assets/build_assets/images/characters/bear.png')
+    this.load.image('crocodile','src/assets/build_assets/images/characters/crocodile.png')
+    this.load.image('dog','src/assets/build_assets/images/characters/dog.png')
+    this.load.image('frog','src/assets/build_assets/images/characters/frog.png')
+    this.load.image('gorilla','src/assets/build_assets/images/characters/gorilla.png')
+    this.load.image('monkey','src/assets/build_assets/images/characters/monkey.png')
+    this.load.image('button','src/assets/build_assets/images/shapes/button.png')
+    this.load.image('moose','src/assets/build_assets/images/characters/moose.png')
+    this.load.image('giraffe','src/assets/build_assets/images/characters/giraffe.png')
+    this.load.image('heart','src/assets/build_assets/images/shapes/heart.png')
+    this.load.image('circle','src/assets/build_assets/images/shapes/circle.png')
+    this.load.audio('backAudio','src/assets/build_assets/sounds/bckMusic.mp3')
+    
   }
 
   create () {
