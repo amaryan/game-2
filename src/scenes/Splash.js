@@ -26,6 +26,7 @@ export default class extends Phaser.Scene {
     this.load.image('mask','assets/images/mask1.png')
     this.load.image('tint','assets/images/back.jpg')
     this.load.image('tint2','assets/images/back.jpg')
+    this.load.image('circle','assets/images/circle.png')
   }
 
   create () {

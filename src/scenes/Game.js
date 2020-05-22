@@ -81,11 +81,12 @@ var spotlight
     })
     
     bear = this.add.image(80,700,'bear')
-    bear.setDepth(4)
+    //bear.setDepth(4)
     
     
     
-    
+   
+
     alien = this.add.image(400,200,'alien')
     crocodile = this.add.image(180,500,'crocodile')
     monkey = this.add.image(640,500,'monkey')
@@ -149,7 +150,8 @@ var spotlight
       fill: '#74A016'
   }).setOrigin(0,0);
   
- 
+  
+
    this.add.existing(button1)
    
    this.add.existing(alien)
@@ -163,39 +165,28 @@ var spotlight
    this.add.existing(heart1)
    this.add.existing(heart2)
    this.add.existing(heart3)
-   var tint = this.add.image(400,300,'tint')
-   tint.alpha = 0.2
+   //var tint = this.add.image(400,300,'tint')
+   //tint.alpha = 0.2
    //this.add.existing(tint)
-   this.add.existing(bear)
-   
-   //var bgColor = Phaser.Display.Color.GetColor32(152, 134, 130, 40);
-   //var rt = this.add.renderTexture(400, 300, 64, 64);
-   //this.cameras.main.setBackgroundColor(bgColor)
-  spotlight = this.make.sprite({
-    x: 80,
-    y: 500,
-    key: 'tint',
-    add: false,
-    alpha: 0.5
-  })
- 
-  //rt.draw(spotlight)
-  //bear.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
- bg.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  alien.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  heart1.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  heart2.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  heart3.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  crocodile.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  monkey.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  dog.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  frog.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
-  gorilla.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
   
- // bg.mask.invertAlpha = true
+   this.add.existing(bear)
+   let rt = this.add.renderTexture(0, 0, 800, 800);
+    rt.fill(0x000000, 0.5);
+   
+    let spotlight = this.make.sprite({
+      x: 80,
+      y: 700,
+      key: "circle",
+      add: false,
+      height: 200
+    });
+
+    let mask = rt.createBitmapMask(spotlight)
+    mask.invertAlpha = true;
+    rt.setMask(mask);
 
   this.tweens.add({
-    targets: [bear],
+    targets: [bear,spotlight],
     duration: 1000,
     repeat: 1,
     x: 400,
@@ -205,7 +196,8 @@ var spotlight
     onComplete: ()=> {
       text.setColor('#641E16')
       textTime.setText('The battle starts in 5 seconds')
-      tint.destroy()
+      rt.destroy()
+      /*tint.destroy()
       bg.clearMask()
       alien.clearMask()
       heart1.clearMask()
@@ -215,7 +207,7 @@ var spotlight
       monkey.clearMask()
       dog.clearMask()
       frog.clearMask()
-      gorilla.clearMask()
+      gorilla.clearMask()*/
 
     }
   })
@@ -232,7 +224,7 @@ var spotlight
     }
   })
    this.tweens.add({
-    targets: [dog,frog,gorilla,bear,crocodile,monkey],
+    targets: [dog,frog,gorilla,bear,crocodile,monkey,spotlight],
     duration: 1000,
     repeat: -1,
     yoyo: true,
