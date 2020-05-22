@@ -30,7 +30,7 @@ var heart3
 var alienTween
 var hit
 var byeCards
-var circle
+var spotlight
  class GameScene extends Phaser.Scene {
   constructor () {
     super({ key: 'GameScene' })
@@ -47,8 +47,10 @@ var circle
     audio.volume = audio.volume- 0.9
     audio.play()
     mouseInput = this.input
+  
     var bg = this.add.image(400,300,'background')
    
+    
     
     text = this.add.text(250, 380, 'Drag the bear to the board', {
       font: '30px Fredoka One',
@@ -79,10 +81,8 @@ var circle
     })
     
     bear = this.add.image(80,700,'bear')
-    circle = this.add.graphics()
-    var color = 0xF73607; // mult
-    var thickness = 4;
-    var alpha = 0.3;
+    bear.setDepth(4)
+    
     
     
     
@@ -148,10 +148,10 @@ var circle
       font: '60px Fredoka One',
       fill: '#74A016'
   }).setOrigin(0,0);
-
-
+  
+ 
    this.add.existing(button1)
-   this.add.existing(bear)
+   
    this.add.existing(alien)
    this.add.existing(dog)
    this.add.existing(frog)
@@ -163,16 +163,25 @@ var circle
    this.add.existing(heart1)
    this.add.existing(heart2)
    this.add.existing(heart3)
-
-   var spotlight = this.make.sprite({
+   var tint = this.add.image(400,300,'tint')
+   tint.alpha = 0.2
+   //this.add.existing(tint)
+   this.add.existing(bear)
+   
+   //var bgColor = Phaser.Display.Color.GetColor32(152, 134, 130, 40);
+   //var rt = this.add.renderTexture(400, 300, 64, 64);
+   //this.cameras.main.setBackgroundColor(bgColor)
+  spotlight = this.make.sprite({
     x: 80,
-    y: 700,
-    key: 'mask',
+    y: 500,
+    key: 'tint',
     add: false,
-    
+    alpha: 0.5
   })
-  
-  bg.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+ 
+  //rt.draw(spotlight)
+  //bear.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
+ bg.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
   alien.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
   heart1.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
   heart2.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
@@ -183,10 +192,10 @@ var circle
   frog.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
   gorilla.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
   
-  
+ // bg.mask.invertAlpha = true
 
   this.tweens.add({
-    targets: [spotlight,bear],
+    targets: [bear],
     duration: 1000,
     repeat: 1,
     x: 400,
@@ -196,6 +205,7 @@ var circle
     onComplete: ()=> {
       text.setColor('#641E16')
       textTime.setText('The battle starts in 5 seconds')
+      tint.destroy()
       bg.clearMask()
       alien.clearMask()
       heart1.clearMask()
@@ -248,7 +258,7 @@ var circle
  })
  giraffeTween.add({
    targets: alien,
-   duration: 1500,
+   duration: 100,
    angle: 360,
    y: 2000,
    completeDelay: 500, 
