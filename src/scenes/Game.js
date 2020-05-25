@@ -3,7 +3,7 @@
 import Phaser from 'phaser'
 
 import Character from '../sprites/Character'
-
+import Texts from '../sprites/Texts'
 
 var mouseInput 
 var giraffeTween
@@ -11,7 +11,7 @@ var alienTween
 var firstY = 0
 var firstX = 0
 var position = false
-var text;
+var text
 var textTime
 var timedEvent
 var finalText 
@@ -52,24 +52,63 @@ var dog,frog,gorilla
         this.add.image(400,300,'background');
 
         //Los diferentes textos que iran apareciendo 
-       text = this.add.text(250, 380, 'Drag the bear to the board', {
-         font: '30px Fredoka One',
-         fill: '#C0392B '
-       });
-       textTime = this.add.text(32,32,'', {
-       font: '30px Fredoka One',
-       fill: '#74A016'
-       });
-       finalText = this.add.text(1000,360,'', {
-       font: '60px Fredoka One',
-       fill: '#C85213'
-      }).setOrigin(0,0);
-       titleText = this.add.text(-1000,290,'', {
-         font: '60px Fredoka One',
-         fill: '#74A016'
-      }).setOrigin(0,0);
+       this.text = new Texts({
+         scene: this,
+          x: 250,
+          y: 380,
+          text: 'DRAG THE BEAR TO THE BOARD',
+          style: {
+            font: '30px Fredoka One',
+            fill: '#74A016'
+          }
+        });
+        this.textTime = new Texts({
+          scene: this,
+           x: 32,
+           y: 32,
+           text: '',
+           style: {
+             font: '30px Fredoka One',
+             fill: '#74A016'
+           }
+         });
+         this.finalText = new Texts({
+           scene: this,
+           x: 1000,
+           y: 360,
+           text: 'VICTORYYYY',
+           style: {
+             font: '60px Fredoka One',
+             fill: '#C85213'
+           }
+         }).setOrigin(0,0);
+         
+        this.titleText = new Texts({
+           scene: this,
+           x: -1000,
+           y:290,
+           text: '',
+           style: {
+             font: '60px Fredoka One',
+             fill: '#74A016'
+           }
+         }).setOrigin(0,0);
+
+         this.downloadText = new Texts({
+           scene: this,
+           x: 320,
+           y: 477,
+           text: 'DOWNLOAD HERE',
+           style: {
+             font: '30px Fredoka One',
+             fill: '#DA6134'
+           }
+         }).setVisible(false).setDepth(3);
+         titleText = this.titleText;
+         finalText = this.finalText;
+         downloadText = this.downloadText;
         //Creamos los personajes
-    createChars(this)
+        createChars(this);
     //Los añadimos a la escena
     addToScene(this,dog);
     addToScene(this,frog);
@@ -81,7 +120,7 @@ var dog,frog,gorilla
     addToScene(this,moose);
     addToScene(this,giraffe);
     addToScene(this,heart1);
-    ;addToScene(this,alien);
+    addToScene(this,alien);
     addToScene(this,heart2);
     addToScene(this,heart3)
 
@@ -105,12 +144,9 @@ var dog,frog,gorilla
     giraffeTween =  this.tweens.createTimeline();
     alienTween = this.tweens.createTimeline();
     //En este metodo estan definidos los timeline
-    defineTweenLine()
+    defineTweenLine(this)
 
-    downloadText = this.add.text(320,477,'DOWNLOAD HERE', {
-        font: '30px Fredoka One',
-        fill: '#DA6134'
-      }).setVisible(false);
+   
   }
 }
   function tutorialMask(scenes,rt){
@@ -132,15 +168,15 @@ var dog,frog,gorilla
   //Funcion que indica lo que sucede en la batalla
   function startBattle(){
     //Cambiamos el contenido del texto
-    text.setText('Click to start!');
-    textTime.destroy();
+    this.text.setText('Click to start!');
+    this.textTime.destroy();
     //Si el usuario no movio la ficha se coloca sola
     bear.y = 500;
     bear.x = 400;
     //Cuando el usuario haga click se inicia la partida
     this.input.on('pointerdown', function (pointer) {
       //Quitamos el texto cuando el usuario da click en cualquier lado
-      text.setText('');
+      this.text.setText('');
       //Animaciones dentro de la batalla
       byeCards = this.tweens.add({
       targets:  [gorilla,dog,frog],//Animacion de salida de juego de los animales no utilizados
@@ -215,8 +251,8 @@ var dog,frog,gorilla
       yoyo: true,
       ease: 'Sine.easeInOut',
       onComplete: ()=> {
-        text.setColor('#641E16')
-        textTime.setText('The battle starts in 5 seconds')
+        scene.text.setColor('#641E16');
+        scene.textTime.setText('The battle starts in 5 seconds');
         rt.destroy()
       }
     });
@@ -264,23 +300,18 @@ var dog,frog,gorilla
       });
   }
   function killAlien (){
-    console.log(this)
   console.log(alien.life)
     if(alienLife > 0){
       alienLife--
-      alienTween.play()
-      //hit.play()
+      alienTween.play();
       console.log('La vida del alien es de: '+alienLife)
     }
     if(alienLife == 0){
       giraffeTween.play()
-      console.log('ded')
-      
-      //finalScreen()
     }
 
   }
-  function finalScreen(){
+  function finalScreen(scene){
     //Eliminamos los objetos que no van a ser usados mas
     bear.destroy()
     crocodile.destroy()
@@ -288,8 +319,7 @@ var dog,frog,gorilla
     alien.destroy()
   
     titleText.setText('SAFARY ATTACK')
-    finalText.x = finalText.x -50
-    finalText.setText('VICTORY!!!')
+    finalText.setText('VICTORY!!!').setVisible(true)
     downloadText.x = downloadText.x -50
     downloadText.setVisible(true)
   button1.visible = true
@@ -303,7 +333,7 @@ var dog,frog,gorilla
   function addToScene(scene,character){
     scene.add.existing(character)
   }
-  function defineTweenLine(){
+  function defineTweenLine(scene){
     alienTween.add({
       targets: alien,//Retroceso del alien al ser "golpeado"
       duration: 300,
@@ -327,11 +357,11 @@ var dog,frog,gorilla
     yoyo:true,
     repeat: 3,
     ease: 'Power0',
-    onComplete : finalScreen
+    onComplete : ()=> finalScreen(scene)
   });
   giraffeTween.add({
     targets: finalText,//El texto de victoria se desliza hasta su poscion en el centro de la pantalla 
-    x: 250,
+    x: 200,
     duration: 200,
     ease: 'Power3',
   });
