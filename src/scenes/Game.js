@@ -42,93 +42,23 @@ var dog,frog,gorilla
   create () {
   
   //El fondo y el audio
-        let audio = this.sound.add('backAudio',{loop: true})
-        //Bajamos el volumen del audio e iniciamos
-        audio.volume = audio.volume- 0.9
-        audio.play()
-     
-        //Recogemos las acciones de raton en la variable
-        mouseInput = this.input
-        this.add.image(400,300,'background');
-
-        //Los diferentes textos que iran apareciendo 
-       this.text = new Texts({
-         scene: this,
-          x: 250,
-          y: 380,
-          text: 'DRAG THE BEAR TO THE BOARD',
-          style: {
-            font: '30px Fredoka One',
-            fill: '#74A016'
-          }
-        });
-        this.textTime = new Texts({
-          scene: this,
-           x: 32,
-           y: 32,
-           text: '',
-           style: {
-             font: '30px Fredoka One',
-             fill: '#74A016'
-           }
-         });
-         this.finalText = new Texts({
-           scene: this,
-           x: 1000,
-           y: 360,
-           text: 'VICTORYYYY',
-           style: {
-             font: '60px Fredoka One',
-             fill: '#C85213'
-           }
-         }).setOrigin(0,0);
-         
-        this.titleText = new Texts({
-           scene: this,
-           x: -1000,
-           y:290,
-           text: '',
-           style: {
-             font: '60px Fredoka One',
-             fill: '#74A016'
-           }
-         }).setOrigin(0,0);
-
-         this.downloadText = new Texts({
-           scene: this,
-           x: 320,
-           y: 477,
-           text: 'DOWNLOAD HERE',
-           style: {
-             font: '30px Fredoka One',
-             fill: '#DA6134'
-           }
-         }).setVisible(false).setDepth(3);
-         titleText = this.titleText;
-         finalText = this.finalText;
-         downloadText = this.downloadText;
-        //Creamos los personajes
-        createChars(this);
-    //Los añadimos a la escena
-    addToScene(this,dog);
-    addToScene(this,frog);
-    addToScene(this,gorilla);
-    addToScene(this,bear);
-    addToScene(this,crocodile);
-    addToScene(this,monkey);
-    addToScene(this,button1);
-    addToScene(this,moose);
-    addToScene(this,giraffe);
-    addToScene(this,heart1);
-    addToScene(this,alien);
-    addToScene(this,heart2);
-    addToScene(this,heart3)
-
-    button1.scaleX = 2.5;
-      //Cambiamos la visibilidad de los objetos que seran revelados solo en la pantalla final
-    giraffe.setVisible(false);
-    moose.setVisible(false);
-    button1.visible = false;
+     let audio = this.sound.add('backAudio',{loop: true})
+     //Bajamos el volumen del audio e iniciamos
+     audio.volume = audio.volume- 0.9
+     audio.play();
+     //Recogemos las acciones de raton en la variable
+     mouseInput = this.input;
+     //Fondo
+     this.add.image(400,300,'background');
+     //Los diferentes textos que iran apareciendo
+     createTexts(this)
+     titleText = this.titleText;
+     finalText = this.finalText;
+     downloadText = this.downloadText;
+     //Creamos los personajes
+     createChars(this);
+    
+    //Cambiamos la visibilidad de los objetos que seran revelados solo en la pantalla final
     dragBear();
     //Aqui tenemos el temporizador de 7 segundos
     timedEvent = this.time.addEvent({
@@ -144,9 +74,7 @@ var dog,frog,gorilla
     giraffeTween =  this.tweens.createTimeline();
     alienTween = this.tweens.createTimeline();
     //En este metodo estan definidos los timeline
-    defineTweenLine(this)
-
-   
+    defineTweenLine(this);
   }
 }
   function tutorialMask(scenes,rt){
@@ -318,10 +246,9 @@ var dog,frog,gorilla
     monkey.destroy()
     alien.destroy()
   
-    titleText.setText('SAFARY ATTACK')
-    finalText.setText('VICTORY!!!').setVisible(true)
-    downloadText.x = downloadText.x -50
-    downloadText.setVisible(true)
+    scene.titleText.setText('SAFARY ATTACK')
+    scene.finalText.setText('VICTORY!!!').setVisible(true)
+    scene.downloadText.setVisible(true)
   button1.visible = true
   giraffe.rotation = +0.5
   moose.rotation = -0.5
@@ -329,9 +256,6 @@ var dog,frog,gorilla
   moose.setVisible(true)
   console.log(this)
   
-  }
-  function addToScene(scene,character){
-    scene.add.existing(character)
   }
   function defineTweenLine(scene){
     alienTween.add({
@@ -459,7 +383,65 @@ var dog,frog,gorilla
       x:640,
       y:500,
       asset: 'monkey'
-    })
+    });
+    giraffe.setVisible(false);
+    moose.setVisible(false);
+    button1.visible = false;
+    button1.scaleX = 2.5;
+  }
+  function createTexts (scene){
+    scene.text = new Texts({
+      scene: scene,
+       x: 250,
+       y: 380,
+       text: 'DRAG THE BEAR TO THE BOARD',
+       style: {
+         font: '30px Fredoka One',
+         fill: '#74A016'
+       }
+     });
+     scene.textTime = new Texts({
+       scene: scene,
+        x: 32,
+        y: 32,
+        text: '',
+        style: {
+          font: '30px Fredoka One',
+          fill: '#74A016'
+        }
+      });
+      scene.finalText = new Texts({
+        scene: scene,
+        x: 1000,
+        y: 360,
+        text: 'VICTORYYYY',
+        style: {
+          font: '60px Fredoka One',
+          fill: '#C85213'
+        }
+      }).setOrigin(0,0).setAlign('center');
+      
+      scene.titleText = new Texts({
+        scene: scene,
+        x: -1000,
+        y:290,
+        text: '',
+        style: {
+          font: '60px Fredoka One',
+          fill: '#74A016'
+        }
+      }).setOrigin(0,0);
+
+      scene.downloadText = new Texts({
+        scene: scene,
+        x: 270,
+        y: 477,
+        text: 'DOWNLOAD HERE',
+        style: {
+          font: '30px Fredoka One',
+          fill: '#DA6134'
+        }
+      }).setVisible(false).setDepth(3);
   }
 
 export default GameScene;
