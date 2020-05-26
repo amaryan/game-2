@@ -57,8 +57,7 @@ var dog,frog,gorilla
      downloadText = this.downloadText;
      //Creamos los personajes
      createChars(this);
-    
-    //Cambiamos la visibilidad de los objetos que seran revelados solo en la pantalla final
+    //Funcion donde arrastramos el oso y cambiamos y controlamos posicion
     dragBear();
     //Aqui tenemos el temporizador de 7 segundos
     timedEvent = this.time.addEvent({
